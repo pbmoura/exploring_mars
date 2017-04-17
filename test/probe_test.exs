@@ -79,83 +79,104 @@ defmodule ProbeTest do
 
   test "move L" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, 'L')
+    probe = Probe.move(probe, "L")
     assert probe == %Probe.State{dir: 3}
   end
 
   test "move R" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, 'R')
+    probe = Probe.move(probe, "R")
     assert probe == %Probe.State{dir: 1}
   end
 
   test "move M" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, 'M')
+    probe = Probe.move(probe, "M")
     assert probe == %Probe.State{y: 1}
   end
 
   test "N ahead with boundary" do
     probe = %Probe.State{y: 1}
     terrain = %Terrain{}
-    probe = Probe.move(probe, 'M', terrain)
+    probe = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{y: 1}
   end
 
   test "E ahead with boundary" do
     probe = %Probe.State{dir: 1, x: 1}
     terrain = %Terrain{}
-    probe = Probe.move(probe, 'M', terrain)
+    probe = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 1, x: 1}
   end
 
   test "S ahead with boundary" do
     probe = %Probe.State{dir: 2}
     terrain = %Terrain{}
-    probe = Probe.move(probe, 'M', terrain)
+    probe = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 2}
   end
 
   test "W ahead with boundary" do
     probe = %Probe.State{dir: 3}
     terrain = %Terrain{}
-    probe = Probe.move(probe, 'M', terrain)
+    probe = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 3}
   end
 
   test "N index" do
-    assert Probe.Directions.index('N') == 0
+    assert Probe.Directions.index("N") == 0
   end
 
   test "E index" do
-    assert Probe.Directions.index('E') == 1
+    assert Probe.Directions.index("E") == 1
   end
 
   test "S index" do
-    assert Probe.Directions.index('S') == 2
+    assert Probe.Directions.index("S") == 2
   end
 
   test "W index" do
-    assert Probe.Directions.index('W') == 3
+    assert Probe.Directions.index("W") == 3
   end
 
   test "label of dir: 0" do
-    assert Probe.Directions.label(0) == 'N'
+    assert Probe.Directions.label(0) == "N"
   end
 
 
   test "label of dir: 1" do
-    assert Probe.Directions.label(1) == 'E'
+    assert Probe.Directions.label(1) == "E"
   end
 
   test "label of dir: 2" do
-    assert Probe.Directions.label(2) == 'S'
+    assert Probe.Directions.label(2) == "S"
   end
 
   test "label of dir: 3" do
-    assert Probe.Directions.label(3) == 'W'
+    assert Probe.Directions.label(3) == "W"
   end
 
+  test "travel case 1" do
+    probe = %Probe.State{x: 1, y: 2, dir: 0}
+    terrain = %Terrain{x_max: 5, y_max: 5}
+    route = String.graphemes("LMLMLMLMM")
+    probe = Probe.travel(probe, route, terrain)
+    assert probe == %Probe.State{x: 1, y: 3, dir: 0}
+  end
 
+  test "travel case 2" do
+    probe = %Probe.State{x: 3, y: 3, dir: 1}
+    terrain = %Terrain{x_max: 5, y_max: 5}
+    route = String.graphemes("MMRMMRMRRM")
+    probe = Probe.travel(probe, route, terrain)
+    assert probe == %Probe.State{x: 5, y: 1, dir: 1}
+  end
+
+  test "(5 1 3) M" do
+    probe = %Probe.State{x: 5, y: 1, dir: 3}
+    terrain = %Terrain{x_max: 5, y_max: 5}
+    probe = Probe.move(probe, "M", terrain)
+    assert probe == %Probe.State{x: 4, y: 1, dir: 3}
+  end
 
 end

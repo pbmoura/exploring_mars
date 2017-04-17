@@ -16,22 +16,29 @@ defmodule Probe do
       0 -> %{probe | y: if !terrain || probe.y < terrain.y_max do probe.y+1 else terrain.y_max end }
       1 -> %{probe | x: if !terrain || probe.x < terrain.x_max do probe.x+1 else terrain.x_max end }
       2 -> %{probe | y: if !terrain || probe.y > terrain.y_min do probe.y-1 else terrain.y_min end }
-      3 -> %{probe | x: if !terrain || probe.x < terrain.x_min do probe.x-1 else terrain.x_min end }
+      3 -> %{probe | x: if !terrain || probe.x > terrain.x_min do probe.x-1 else terrain.x_min end }
     end
   end
 
   def move(probe, movement, terrain \\ nil) do
     case movement do
-      'L' -> turn_left(probe)
-      'R' -> turn_right(probe)
-      'M' -> go_ahead(probe, terrain)
+      "L" -> turn_left(probe)
+      "R" -> turn_right(probe)
+      "M" -> go_ahead(probe, terrain)
+    end
+  end
+
+  def travel(probe, route, terrain) do
+    case route do
+      [] -> probe
+      r -> travel(move(probe, hd(r), terrain), tl(r), terrain)
     end
   end
 
 end
 
 defmodule Probe.Directions do
-  @directions {'N', 'E', 'S', 'W'}
+  @directions {"N", "E", "S", "W"}
 
   def label(index) do
     elem(@directions, index)
