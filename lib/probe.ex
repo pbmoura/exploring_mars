@@ -29,3 +29,15 @@ defmodule Probe do
   end
 
 end
+
+defmodule Probe.Directions do
+  @directions {'N', 'E', 'S', 'W'}
+
+  def label(index) do
+    elem(@directions, index)
+  end
+
+  def index(label) do
+    Enum.find_index(Tuple.to_list(@directions), fn(x) -> x == label end)
+  end
+end

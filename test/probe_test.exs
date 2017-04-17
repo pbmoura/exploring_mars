@@ -123,5 +123,39 @@ defmodule ProbeTest do
     assert probe == %Probe.State{dir: 3}
   end
 
+  test "N index" do
+    assert Probe.Directions.index('N') == 0
+  end
+
+  test "E index" do
+    assert Probe.Directions.index('E') == 1
+  end
+
+  test "S index" do
+    assert Probe.Directions.index('S') == 2
+  end
+
+  test "W index" do
+    assert Probe.Directions.index('W') == 3
+  end
+
+  test "label of dir: 0" do
+    assert Probe.Directions.label(0) == 'N'
+  end
+
+
+  test "label of dir: 1" do
+    assert Probe.Directions.label(1) == 'E'
+  end
+
+  test "label of dir: 2" do
+    assert Probe.Directions.label(2) == 'S'
+  end
+
+  test "label of dir: 3" do
+    assert Probe.Directions.label(3) == 'W'
+  end
+
+
 
 end
