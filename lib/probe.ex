@@ -1,3 +1,5 @@
+require IEx;
+
 defmodule Probe.State do
   defstruct x: 0, y: 0, dir: 0
 end
@@ -33,6 +35,10 @@ defmodule Probe do
       [] -> probe
       r -> travel(move(probe, hd(r), terrain), tl(r), terrain)
     end
+  end
+
+  def to_string(probe) do
+    "#{probe.x} #{probe.y} #{Probe.Directions.label(probe.dir)}"
   end
 
 end
