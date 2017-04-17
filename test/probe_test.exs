@@ -77,6 +77,24 @@ defmodule ProbeTest do
     assert probe == %Probe.State{dir: 3}
   end
 
+  test "move L" do
+    probe = %Probe.State{}
+    probe = Probe.move(probe, 'L')
+    assert probe == %Probe.State{dir: 3}
+  end
+
+  test "move R" do
+    probe = %Probe.State{}
+    probe = Probe.move(probe, 'R')
+    assert probe == %Probe.State{dir: 1}
+  end
+
+  test "move M" do
+    probe = %Probe.State{}
+    probe = Probe.move(probe, 'M')
+    assert probe == %Probe.State{y: 1}
+  end
+
 
 
 end

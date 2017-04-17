@@ -19,4 +19,13 @@ defmodule Probe do
       3 -> %{probe | x: probe.x-1}
     end
   end
+
+  def move(probe, movement) do
+    case movement do
+      'L' -> turn_left(probe)
+      'R' -> turn_right(probe)
+      'M' -> go_ahead(probe)
+    end
+  end
+
 end
