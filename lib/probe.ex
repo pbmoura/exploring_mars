@@ -10,4 +10,13 @@ defmodule Probe do
   def turn_right(probe) do
     %{probe | dir: rem(probe.dir + 1, 4)}
   end
+
+  def go_ahead(probe) do
+    case probe.dir do
+      0 -> %{probe | y: probe.y+1}
+      1 -> %{probe | x: probe.x+1}
+      2 -> %{probe | y: probe.y-1}
+      3 -> %{probe | x: probe.x-1}
+    end
+  end
 end

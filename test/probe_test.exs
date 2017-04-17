@@ -52,4 +52,31 @@ defmodule ProbeTest do
     assert probe == %Probe.State{}
   end
 
+
+  test "N ahead" do
+    probe = %Probe.State{}
+    probe = Probe.go_ahead(probe)
+    assert probe == %Probe.State{y: 1}
+  end
+
+  test "E ahead" do
+    probe = %Probe.State{dir: 1}
+    probe = Probe.go_ahead(probe)
+    assert probe == %Probe.State{dir: 1, x: 1}
+  end
+
+  test "S ahead" do
+    probe = %Probe.State{dir: 2, y: 1}
+    probe = Probe.go_ahead(probe)
+    assert probe == %Probe.State{dir: 2}
+  end
+
+  test "W ahead" do
+    probe = %Probe.State{dir: 3, x: 1}
+    probe = Probe.go_ahead(probe)
+    assert probe == %Probe.State{dir: 3}
+  end
+
+
+
 end
