@@ -7,4 +7,7 @@ defmodule Probe do
     %{probe | dir: if probe.dir == 0 do 3 else probe.dir-1 end}
   end
 
+  def turn_right(probe) do
+    %{probe | dir: rem(probe.dir + 1, 4)}
+  end
 end
