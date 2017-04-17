@@ -95,6 +95,33 @@ defmodule ProbeTest do
     assert probe == %Probe.State{y: 1}
   end
 
+  test "N ahead with boundary" do
+    probe = %Probe.State{y: 1}
+    terrain = %Terrain{}
+    probe = Probe.move(probe, 'M', terrain)
+    assert probe == %Probe.State{y: 1}
+  end
+
+  test "E ahead with boundary" do
+    probe = %Probe.State{dir: 1, x: 1}
+    terrain = %Terrain{}
+    probe = Probe.move(probe, 'M', terrain)
+    assert probe == %Probe.State{dir: 1, x: 1}
+  end
+
+  test "S ahead with boundary" do
+    probe = %Probe.State{dir: 2}
+    terrain = %Terrain{}
+    probe = Probe.move(probe, 'M', terrain)
+    assert probe == %Probe.State{dir: 2}
+  end
+
+  test "W ahead with boundary" do
+    probe = %Probe.State{dir: 3}
+    terrain = %Terrain{}
+    probe = Probe.move(probe, 'M', terrain)
+    assert probe == %Probe.State{dir: 3}
+  end
 
 
 end

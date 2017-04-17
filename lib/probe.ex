@@ -11,20 +11,20 @@ defmodule Probe do
     %{probe | dir: rem(probe.dir + 1, 4)}
   end
 
-  def go_ahead(probe) do
+  def go_ahead(probe, terrain \\ nil) do
     case probe.dir do
-      0 -> %{probe | y: probe.y+1}
-      1 -> %{probe | x: probe.x+1}
-      2 -> %{probe | y: probe.y-1}
-      3 -> %{probe | x: probe.x-1}
+      0 -> %{probe | y: if !terrain || probe.y < terrain.y_max do probe.y+1 else terrain.y_max end }
+      1 -> %{probe | x: if !terrain || probe.x < terrain.x_max do probe.x+1 else terrain.x_max end }
+      2 -> %{probe | y: if !terrain || probe.y > terrain.y_min do probe.y-1 else terrain.y_min end }
+      3 -> %{probe | x: if !terrain || probe.x < terrain.x_min do probe.x-1 else terrain.x_min end }
     end
   end
 
-  def move(probe, movement) do
+  def move(probe, movement, terrain \\ nil) do
     case movement do
       'L' -> turn_left(probe)
       'R' -> turn_right(probe)
-      'M' -> go_ahead(probe)
+      'M' -> go_ahead(probe, terrain)
     end
   end
 
