@@ -31,7 +31,7 @@ defmodule Probe do
   def travel(probe, route, terrain) do
     case route do
       [] -> probe
-      r -> travel(move(probe, hd(r), terrain), tl(r), terrain)
+      [head|tail] -> travel(move(probe, head, terrain), tail, terrain)
     end
   end
 
