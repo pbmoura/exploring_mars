@@ -20,6 +20,10 @@ defmodule Probe do
     end
   end
 
+  def put_flag(probe, terrain) do
+    {probe, %{terrain | flags: terrain.flags ++ [%Flag{x: probe.x, y: probe.y}]}}
+  end
+
   def move(probe, movement, terrain \\ nil) do
     case movement do
       "L" -> turn_left(probe)

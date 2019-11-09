@@ -179,4 +179,20 @@ defmodule ProbeTest do
     assert probe == %Probe.State{x: 4, y: 1, dir: 3}
   end
 
+  test "put a flag" do
+    probe = %Probe.State{x: 1, y: 1, dir: 0}
+    terrain = %Terrain{x_max: 2, y_max: 2}
+    {probe, terrain} = Probe.put_flag(probe, terrain)
+    assert terrain == %Terrain{x_max: 2, y_max: 2, flags: [%Flag{x: 1, y: 1}]}
+  end
+
+  test "put two flags" do
+    probe = %Probe.State{x: 0, y: 1, dir: 0}
+    terrain = %Terrain{x_max: 2, y_max: 2}
+    {probe, terrain} = Probe.put_flag(probe, terrain)
+    probe = %Probe.State{x: 1, y: 1, dir: 0}
+    {probe, terrain} = Probe.put_flag(probe, terrain)
+    assert terrain == %Terrain{x_max: 2, y_max: 2, flags: [%Flag{x: 0, y: 1}, %Flag{x: 1, y: 1}]}
+  end
+
 end
