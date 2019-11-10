@@ -23,7 +23,7 @@ defmodule ExploringMars do
     {continue, probe} = request_probe()
     if continue do
       route = request_route()
-      probe = Probe.travel(probe, route, terrain)
+      probe = Probe.travel(probe, terrain, route)
       IO.puts Probe.to_string(probe)
       probe_loop(terrain)
     end

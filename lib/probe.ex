@@ -26,17 +26,23 @@ defmodule Probe do
 
   def move(probe, movement, terrain \\ nil) do
     case movement do
-      "L" -> turn_left(probe)
-      "R" -> turn_right(probe)
-      "M" -> go_ahead(probe, terrain)
+      "L" -> {turn_left(probe), terrain}
+      "R" -> {turn_right(probe), terrain}
+      "M" -> {go_ahead(probe, terrain), terrain}
+      "F" -> put_flag(probe, terrain)
     end
   end
 
-  def travel(probe, route, terrain) do
+  def travel(probe, terrain, route) do
     case route do
-      [] -> probe
-      [head|tail] -> travel(move(probe, head, terrain), tail, terrain)
+      [] -> {probe, terrain}
+      [head|tail] -> travel(move(probe, head, terrain), tail)
     end
+  end
+
+  def travel(pair, route) do
+    {probe, terrain} = pair
+    travel(probe, terrain, route)
   end
 
   def to_string(probe) do

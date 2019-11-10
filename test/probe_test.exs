@@ -79,47 +79,47 @@ defmodule ProbeTest do
 
   test "move L" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, "L")
+    {probe, _} = Probe.move(probe, "L")
     assert probe == %Probe.State{dir: 3}
   end
 
   test "move R" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, "R")
+    {probe, _} = Probe.move(probe, "R")
     assert probe == %Probe.State{dir: 1}
   end
 
   test "move M" do
     probe = %Probe.State{}
-    probe = Probe.move(probe, "M")
+    {probe, _} = Probe.move(probe, "M")
     assert probe == %Probe.State{y: 1}
   end
 
   test "N ahead with boundary" do
     probe = %Probe.State{y: 1}
     terrain = %Terrain{}
-    probe = Probe.move(probe, "M", terrain)
+    {probe, _} = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{y: 1}
   end
 
   test "E ahead with boundary" do
     probe = %Probe.State{dir: 1, x: 1}
     terrain = %Terrain{}
-    probe = Probe.move(probe, "M", terrain)
+    {probe, _} = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 1, x: 1}
   end
 
   test "S ahead with boundary" do
     probe = %Probe.State{dir: 2}
     terrain = %Terrain{}
-    probe = Probe.move(probe, "M", terrain)
+    {probe, _} = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 2}
   end
 
   test "W ahead with boundary" do
     probe = %Probe.State{dir: 3}
     terrain = %Terrain{}
-    probe = Probe.move(probe, "M", terrain)
+    {probe, _} = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{dir: 3}
   end
 
@@ -160,7 +160,7 @@ defmodule ProbeTest do
     probe = %Probe.State{x: 1, y: 2, dir: 0}
     terrain = %Terrain{x_max: 5, y_max: 5}
     route = String.graphemes("LMLMLMLMM")
-    probe = Probe.travel(probe, route, terrain)
+    {probe, _} = Probe.travel(probe, terrain, route)
     assert probe == %Probe.State{x: 1, y: 3, dir: 0}
   end
 
@@ -168,21 +168,21 @@ defmodule ProbeTest do
     probe = %Probe.State{x: 3, y: 3, dir: 1}
     terrain = %Terrain{x_max: 5, y_max: 5}
     route = String.graphemes("MMRMMRMRRM")
-    probe = Probe.travel(probe, route, terrain)
+    {probe, _} = Probe.travel(probe, terrain, route)
     assert probe == %Probe.State{x: 5, y: 1, dir: 1}
   end
 
   test "(5 1 3) M" do
     probe = %Probe.State{x: 5, y: 1, dir: 3}
     terrain = %Terrain{x_max: 5, y_max: 5}
-    probe = Probe.move(probe, "M", terrain)
+    {probe, _} = Probe.move(probe, "M", terrain)
     assert probe == %Probe.State{x: 4, y: 1, dir: 3}
   end
 
   test "put a flag" do
     probe = %Probe.State{x: 1, y: 1, dir: 0}
     terrain = %Terrain{x_max: 2, y_max: 2}
-    {probe, terrain} = Probe.put_flag(probe, terrain)
+    {_, terrain} = Probe.put_flag(probe, terrain)
     assert terrain == %Terrain{x_max: 2, y_max: 2, flags: [%Flag{x: 1, y: 1}]}
   end
 
@@ -191,8 +191,26 @@ defmodule ProbeTest do
     terrain = %Terrain{x_max: 2, y_max: 2}
     {probe, terrain} = Probe.put_flag(probe, terrain)
     probe = %Probe.State{x: 1, y: 1, dir: 0}
-    {probe, terrain} = Probe.put_flag(probe, terrain)
+    {_, terrain} = Probe.put_flag(probe, terrain)
     assert terrain == %Terrain{x_max: 2, y_max: 2, flags: [%Flag{x: 0, y: 1}, %Flag{x: 1, y: 1}]}
+  end
+
+  test "travel and put flag at the end" do
+    probe = %Probe.State{x: 1, y: 2, dir: 0}
+    terrain = %Terrain{x_max: 5, y_max: 5}
+    route = String.graphemes("LMLMLMLMMF")
+    {probe, terrain} = Probe.travel(probe, terrain, route)
+    assert probe == %Probe.State{x: 1, y: 3, dir: 0}
+    assert terrain == %Terrain{x_max: 5, y_max: 5, flags: [%Flag{x: 1, y: 3}]}
+  end
+
+  test "travel and put flag at the begin and end" do
+    probe = %Probe.State{x: 1, y: 2, dir: 0}
+    terrain = %Terrain{x_max: 5, y_max: 5}
+    route = String.graphemes("FLMLMLMLMMF")
+    {probe, terrain} = Probe.travel(probe, terrain, route)
+    assert probe == %Probe.State{x: 1, y: 3, dir: 0}
+    assert terrain == %Terrain{x_max: 5, y_max: 5, flags: [%Flag{x: 1, y: 2}, %Flag{x: 1, y: 3}]}
   end
 
 end
